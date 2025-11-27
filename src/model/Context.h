@@ -1,22 +1,19 @@
 #ifndef __CONTEXT__
 #define __CONTEXT__
 
+#include "config.h"
+
 class Context {
 
 public:
   Context();
 
-  void setStarted();
-  void setStopped();
-
-  bool isStarted();  
-  bool isStopped();
+  void setState(State state);
+  State getState();
   void reset();
-
+  
 private:
-
-  bool started; 
-  bool stopped;
+  State state;
 };
 
 #endif

@@ -1,30 +1,19 @@
 #include "Context.h"
+#include "config.h"
 
 Context::Context(){
-  started = false;
-  stopped = false;
+  this->state = State::DRONE_INSIDE;
 }
 
-bool Context::isStarted(){
-  return started;
+void Context::setState(State s){
+  state = s;
 }
 
-bool Context::isStopped(){
-  return stopped;
-}
-
-void Context::setStarted(){
-  started = true;
-  stopped = false;
-}
-
-void Context::setStopped(){
-  stopped = true;
-  started = false;
+State Context::getState(){
+  return state;
 }
 
 void Context::reset(){
-  started = false;
-  stopped = false;
+  state = State::DRONE_INSIDE;
 }
 
