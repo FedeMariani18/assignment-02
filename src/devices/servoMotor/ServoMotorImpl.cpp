@@ -30,3 +30,7 @@ void ServoMotorImpl::off(){
     _on = false;
     motor.detach();
 }
+
+double getPosition(){
+
+}
