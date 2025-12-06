@@ -1,5 +1,7 @@
 #define BT_PIN 0
-#define LED_PIN 0
+#define LED1_PIN 0
+#define LED2_PIN 0
+#define RED_LED_PIN 0
 #define MOTOR_PIN 0
 #define PIR_PIN 0
 #define SONAR_ECHO_PIN 0
@@ -18,6 +20,8 @@
 
 #define TEMP1 20
 #define TEMP2 24
+
+#define PERIOD 50
 
 enum class State {
     DRONE_INSIDE,

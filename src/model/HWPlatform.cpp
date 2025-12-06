@@ -11,9 +11,9 @@ void wakeUp(){}
 
 HWPlatform::HWPlatform(){
   resetButton = new ButtonImpl(BT_PIN);
-  led1 = new Led(LED_PIN);
-  led2 = new Led(LED_PIN);
-  led3 = new Led(LED_PIN);
+  led1 = new Led(LED1_PIN);
+  led2 = new Led(LED2_PIN);
+  led3 = new Led(RED_LED_PIN);
   motor = new ServoMotorImpl(MOTOR_PIN);
   presenceSensor = new Pir(PIR_PIN);
   proximitySensor = new Sonar(SONAR_ECHO_PIN, SONAR_TRIG_PIN, SONAR_TIMEOUT);
