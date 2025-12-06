@@ -22,6 +22,7 @@
 #define TEMP2 24
 
 #define PERIOD 50
+#define DISTANCE_PERIOD 0
 
 enum class State {
     DRONE_INSIDE,
