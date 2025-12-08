@@ -19,12 +19,17 @@ void FlowTask::tick() {
             if (contextAlarm.getAlarmState() == AlarmState::ALARM) {
                 context.setState(State::FORCED_CLOSING);
             }
+            
             if (distance > d1) {
-                if (elapsedTime() > t1) {
+                if (firstTime) {
+                    startTimer();
+                    firstTime = false;
+                } else if (elapsedTime() > t1) {
                     context.setState(State::DRONE_OUT);
+                    firstTime = true;
                 }
             } else {
-                startTimer();
+                firstTime = true;
             }
         break;
 
@@ -38,22 +43,49 @@ void FlowTask::tick() {
             if (contextAlarm.getAlarmState() == AlarmState::ALARM) {
                 context.setState(State::FORCED_CLOSING);
             }
+
             if (distance < d2) {
-                if (elapsedTime() > t2) {
+                if (firstTime) {
+                    startTimer();
+                    firstTime = false;
+                } else if (elapsedTime() > t2) {
                     context.setState(State::DRONE_INSIDE);
+                    firstTime = true;
                 }
             } else {
-                startTimer();
+                firstTime = true;
+            }
+        break;
+
+        case State::FORCED_CLOSING:
+            if (distance > d1) {
+                if (firstTime) {
+                    startTimer();
+                    firstTime = false;
+                } else if (elapsedTime() > t1) {
+                    context.setState(State::DRONE_OUT);
+                    firstTime = true;
+                }
+            } else if (distance < d2) {
+                if (firstTime) {
+                    startTimer();
+                    firstTime = false;
+                } else if (elapsedTime() > t2) {
+                    context.setState(State::DRONE_INSIDE);
+                    firstTime = true;
+                }
+            } else {
+                firstTime = true;
             }
         break;
     }
 }
 
-void startTimer() {
+void FlowTask::startTimer() {
     time = millis();
 }
 
-long elapsedTime() {
+long FlowTask::elapsedTime() {
     return millis() - time;
 }
 

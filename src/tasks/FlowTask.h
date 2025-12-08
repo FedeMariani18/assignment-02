@@ -22,6 +22,7 @@ class FlowTask: public Task {
         Command& command;
 
         long time = 0;
+        bool firstTime = true;
         int d1 = 1; //da modificare
         int t1 = 1;
         int d2 = 1;
