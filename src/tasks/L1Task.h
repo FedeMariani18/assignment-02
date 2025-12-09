@@ -8,12 +8,12 @@
 class L1Task: public Task{
 
 public:
-    L1Task(Led* led, Context* context);
+    L1Task(Led* led, Context& context);
     void tick();
 
 private:
     Led* led;
-    Context* context;
+    Context& context;
 };
 
 #endif

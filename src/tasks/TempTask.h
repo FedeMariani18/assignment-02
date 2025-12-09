@@ -8,14 +8,14 @@
 class TempTask: public Task{
 
 public:
-    TempTask(TempSensor* tempSensor, ContextAlarm* contextAlarm, double& temp);
+    TempTask(TempSensor* tempSensor, ContextAlarm& contextAlarm, double& temp);
     void tick();
 
 private:
     double temp;
 
     TempSensor* tempSensor;
-    ContextAlarm* contextAlarm;
+    ContextAlarm& contextAlarm;
 };
 
 #endif

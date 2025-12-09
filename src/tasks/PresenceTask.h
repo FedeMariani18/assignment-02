@@ -8,12 +8,12 @@
 class PresenceTask: public Task{
 
 public:
-    PresenceTask(PresenceSensor* presenceSensor, Context* context, bool& present);
+    PresenceTask(PresenceSensor* presenceSensor, Context& context, bool& present);
     void tick();
 
 private:
     PresenceSensor* presenceSensor;
-    Context* context;
+    Context& context;
     bool present;
 };
 

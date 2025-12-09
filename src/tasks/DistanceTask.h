@@ -8,12 +8,12 @@
 class DistanceTask: public Task{
 
 public:
-    DistanceTask(ProximitySensor* proximitySensor, Context* context, double& distance);
+    DistanceTask(ProximitySensor* proximitySensor, Context& context, double& distance);
     void tick();
 
 private:
     ProximitySensor* proximitySensor;
-    Context* context;
+    Context& context;
     double distance;
 };
 

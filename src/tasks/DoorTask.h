@@ -8,14 +8,14 @@
 class DoorTask: public Task{
 
 public:
-    DoorTask(ServoMotor* motor, Context* context);
+    DoorTask(ServoMotor* motor, Context& context);
     void tick();
 
 private:
     void setState(int state);
 
     ServoMotor* motor;
-    Context* context;
+    Context& context;
 
     enum {CLOSED, CLOSING, OPENING, OPEN} state;
 };

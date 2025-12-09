@@ -10,16 +10,18 @@
 #include "tasks/PresenceTask.h"
 #include "tasks/TemperatureAlarmTask.h"
 #include "tasks/TempTask.h"
+#include "tasks/FlowTask.h"
 
 
 Scheduler sched;
 HWPlatform* hWPlatform;
-Context* context;
-ContextAlarm* contextAlarm;
+Context context;
+ContextAlarm contextAlarm;
 
 double distanceValue;
 bool dronePresence;
 double tempValue;
+Command command;
 
 void setup() {
   sched.init(PERIOD);
@@ -27,8 +29,7 @@ void setup() {
   hWPlatform = new HWPlatform();
   hWPlatform->init();
 
-  context = new Context();
-  contextAlarm = new ContextAlarm();
+  Task* flowtask = new FlowTask(contextAlarm, context, dronePresence, distanceValue, command);
 
   Task* distanceTask = new DistanceTask(hWPlatform->getProximitySensor(), context, distanceValue);
   distanceTask->init(DISTANCE_PERIOD);
