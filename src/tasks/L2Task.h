@@ -12,6 +12,8 @@ public:
     void tick();
 
 private:
+    void setState(int state);
+    enum {OFF,ON} state;
     Led* led;
     Context& context;
 };
