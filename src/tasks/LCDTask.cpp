@@ -10,34 +10,30 @@ void LCDTask::tick(){
     State currentState = context.getState();
     if(currentState != lastState){
         if(contextAlarm.getAlarmState() == AlarmState::ALARM){
-            lcd->clear();
-            lcd->setCursor(0, 0);
-            lcd->print("ALARM");
+            printString("ALARM");
             return;
         } else {
             switch(currentState){
                 case State::DRONE_INSIDE:
-                    lcd->clear();
-                    lcd->setCursor(0, 0);
-                    lcd->print("DRONE INSIDE");
+                    printString("DRONE INSIDE");
                     break;
                 case State::TAKE_OFF:
-                    lcd->clear();
-                    lcd->setCursor(0, 0);
-                    lcd->print("TAKE OFF");
+                    printString("TAKE OFF");
                     break;
                 case State::DRONE_OUT:
-                    lcd->clear();
-                    lcd->setCursor(0, 0);
-                    lcd->print("DRONE OUT");
+                    printString("DRONE OUT");
                     break;
                 case State::LANDING:
-                    lcd->clear();
-                    lcd->setCursor(0, 0);
-                    lcd->print("LANDING");
+                    printString("LANDING");
                     break;
             }
         }
         lastState = currentState;
     }
+}
+
+void LCDTask::printString(String s){
+    lcd->clear();
+    lcd->setCursor(0, 0);
+    lcd->print(s);
 }
