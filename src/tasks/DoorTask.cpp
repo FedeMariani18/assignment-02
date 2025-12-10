@@ -1,4 +1,7 @@
 #include "DoorTask.h"
+#include <Arduino.h>
+
+#define FWD_TIME 1000
 
 DoorTask::DoorTask(ServoMotor* motor, Context& context):
     motor(motor), context(context){
@@ -7,15 +10,20 @@ DoorTask::DoorTask(ServoMotor* motor, Context& context):
 
 void DoorTask::tick(){
     switch (state) {
-    case CLOSED:
+    case CLOSE:
         if(context.getState() == State::LANDING || context.getState() == State::TAKE_OFF){
             setState(OPENING);
         }
         break;
 
     case OPENING:
-        motor->setPosition(90);
+        long dt = elapsedTimeInState();
+        currentPos = (((float) dt)/FWD_TIME)*180;
+        motor->setPosition(currentPos);
         
+        if(currentPos >= 90){
+            setState(OPEN);
+        }
         break;
 
     case OPEN:
@@ -26,7 +34,26 @@ void DoorTask::tick(){
         break;
 
     case CLOSING:
-        /* code */
+        long dt = elapsedTimeInState();
+        currentPos = (((float) dt)/FWD_TIME)*180;
+        motor->setPosition(currentPos);
+        
+        if(currentPos <= 0){
+            setState(CLOSE);
+        }
         break;
     }
 }
+
+// void DoorTask::startTimeInState(){
+//     stateTimeStamp = millis();
+//     countingTime = true;
+// }
+
+// long DoorTask::elapsedTimeInState(){
+//     return millis() - stateTimeStamp;
+// }
+
+// void DoorTask::stopTimeInState(){
+//     countingTime = false;
+// }

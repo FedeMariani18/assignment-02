@@ -13,9 +13,16 @@ public:
 
 private:
     void setState(int state);
+    void startTimeInState();
+    long elapsedTimeInState();
+    void stopTimeInState();
 
     ServoMotor* motor;
     Context& context;
+    
+    int currentPos; 
+    // long stateTimeStamp;
+    // bool countingTime;
 
     enum {CLOSED, CLOSING, OPENING, OPEN} state;
 };
