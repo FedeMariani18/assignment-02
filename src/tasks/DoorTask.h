@@ -5,6 +5,8 @@
 #include "devices\servoMotor\ServoMotor.h"
 #include "model\Context.h"
 
+#define MAX_OPEN_DEGREE 90
+
 class DoorTask: public Task{
 
 public:
@@ -20,11 +22,9 @@ private:
     ServoMotor* motor;
     Context& context;
     
-    int currentPos; 
-    // long stateTimeStamp;
-    // bool countingTime;
+    int currentPos;
 
-    enum {CLOSED, CLOSING, OPENING, OPEN} state;
+    enum {CLOSE, CLOSING, OPENING, OPEN} state;
 };
 
 #endif

@@ -18,7 +18,7 @@ void DoorTask::tick(){
 
     case OPENING:
         long dt = elapsedTimeInState();
-        currentPos = (((float) dt)/FWD_TIME)*180;
+        currentPos = (((float) dt)/FWD_TIME)*MAX_OPEN_DEGREE;
         motor->setPosition(currentPos);
         
         if(currentPos >= 90){
@@ -35,7 +35,7 @@ void DoorTask::tick(){
 
     case CLOSING:
         long dt = elapsedTimeInState();
-        currentPos = (((float) dt)/FWD_TIME)*180;
+        currentPos = (((float) dt)/FWD_TIME)*MAX_OPEN_DEGREE;
         motor->setPosition(currentPos);
         
         if(currentPos <= 0){
@@ -44,16 +44,3 @@ void DoorTask::tick(){
         break;
     }
 }
-
-// void DoorTask::startTimeInState(){
-//     stateTimeStamp = millis();
-//     countingTime = true;
-// }
-
-// long DoorTask::elapsedTimeInState(){
-//     return millis() - stateTimeStamp;
-// }
-
-// void DoorTask::stopTimeInState(){
-//     countingTime = false;
-// }
