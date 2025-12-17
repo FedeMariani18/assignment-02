@@ -6,17 +6,14 @@ String content;
 MsgServiceClass MsgService;
 
 bool MsgServiceClass::isMsgAvailable(){
-  return msgAvailable;
+    serialEvent();
+    return msgAvailable;
 }
 
 Msg* MsgServiceClass::receiveMsg(){
-    if (msgAvailable){
-        Msg* msg = currentMsg;
-        resetMsg();
-        return msg;  
-    } else {
-        return NULL; 
-    }
+    Msg* msg = currentMsg;
+    resetMsg();
+    return msg;
 }
 
 void MsgServiceClass::init(){
@@ -40,10 +37,10 @@ void serialEvent() {
     while (Serial.available()) {
         char ch = (char) Serial.read();
         if (ch == '\n'){
-        MsgService.currentMsg = new Msg(content);
-        MsgService.msgAvailable = true;      
+            MsgService.currentMsg = new Msg(content);
+            MsgService.msgAvailable = true;      
         } else {
-        content += ch;      
+            content += ch;
         }
     }
 }
