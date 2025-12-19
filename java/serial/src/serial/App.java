@@ -6,6 +6,7 @@ public class App {
 
     public static void main(final String[] args) {
         ViewFrame frame = new ViewFrame();
-        frame.setPanel(new ViewPanel());
+        Controller controller = new Controller(frame);
+        controller.loop();
     }
 }
