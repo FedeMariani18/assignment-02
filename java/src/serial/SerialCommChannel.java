@@ -3,6 +3,7 @@ package serial;
 import java.util.concurrent.*;
 import jssc.*;
 
+import serial.Common.State;
 /**
  * Comm channel implementation based on serial port.
  * 
@@ -55,13 +56,11 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 
 	@Override
 	public String receiveMsg() throws InterruptedException {
-		// TODO Auto-generated method stub
 		return queue.take();
 	}
 
 	@Override
 	public boolean isMsgAvailable() {
-		// TODO Auto-generated method stub
 		return !queue.isEmpty();
 	}
 
@@ -112,5 +111,14 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
                 System.out.println("Error in receiving string from COM-port: " + ex);
             }
         }
+	}
+
+	State transformMsgToState(String newState){
+		if(newState == "TAKE_OFF"){
+			return State.TAKE_OFF;
+		} else if(newState == "LANDING"){
+			return State.LANDING;
+		}
+		return null;
 	}
 }

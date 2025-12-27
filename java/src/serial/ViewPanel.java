@@ -35,7 +35,7 @@ public class ViewPanel extends JPanel{
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         btn = new Button("");
-
+        System.out.println("creato bottone");
         rightPanel.add(label);
         rightPanel.add(Box.createVerticalStrut(10)); // spazio
         rightPanel.add(btn);
@@ -69,11 +69,11 @@ public class ViewPanel extends JPanel{
     public void updateButtonEnabled(State s) {
         switch (s) {
             case State.LANDING:
-            case State.TAKING_OFF:
+            case State.TAKE_OFF:
                 btn.setEnabled(false);
                 break;
-            case State.REST:
-            case State.OPERATING:
+            case State.DRONE_INSIDE:
+            case State.DRONE_OUT:
                 btn.setEnabled(true);
                 break;
         }

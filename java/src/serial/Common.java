@@ -2,9 +2,9 @@ package serial;
 
 public class Common {
     public enum State{
-        REST,
-        TAKING_OFF,
-        OPERATING,
+        DRONE_INSIDE,
+        TAKE_OFF,
+        DRONE_OUT,
         LANDING
     }
 }

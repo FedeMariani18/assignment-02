@@ -6,7 +6,7 @@ public class Model {
     private State state;
 
     public Model(){
-        state = State.REST;
+        state = State.DRONE_INSIDE;
     }
 
     public void chancheState(State s){
