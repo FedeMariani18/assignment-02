@@ -65,6 +65,7 @@ void setup() {
   Task* lcdTask = new LCDTask(hWPlatform->getLcd(), context, contextAlarm);
   lcdTask->init(LCD_TASK_PERIOD);
 
+  sched.addTask(msgManagerTask);
   sched.addTask(flowtask);
   sched.addTask(distanceTask);
   sched.addTask(doorTask);  

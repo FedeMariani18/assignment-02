@@ -1,12 +1,12 @@
 #ifndef __CONFIG__
 #define __CONFIG__
 
-#define BT_PIN 5
-#define LED1_PIN 2
-#define LED2_PIN 3
+#define BT_PIN 3
+#define LED1_PIN 6
+#define LED2_PIN 5
 #define RED_LED_PIN 4
 #define MOTOR_PIN 9
-#define PIR_PIN 6
+#define PIR_PIN 2
 #define SONAR_ECHO_PIN 7
 #define SONAR_TRIG_PIN 8
 #define SONAR_TIMEOUT 1
@@ -58,6 +58,7 @@ enum class AlarmState {
 enum class Command {
     TAKE_OFF,
     LANDING,
+    NONE,
 };
 
 #endif

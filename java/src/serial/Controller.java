@@ -25,21 +25,18 @@ public class Controller {
     public void loop() throws InterruptedException{
         while(true){
             updateChanges();
+            Thread.sleep(10);
         }
     }
 
     public void buttonPressed(){
         System.out.println("bottone premuto " + model.getState());
         switch (model.getState()) {
-            case State.TAKE_OFF:
             case State.DRONE_INSIDE:
                 commChannel.sendMsg(fromStateToString(State.TAKE_OFF));
-                model.chancheState(State.TAKE_OFF);
                 break;
-            case State.LANDING:
             case State.DRONE_OUT:
                 commChannel.sendMsg(fromStateToString(State.LANDING));
-                model.chancheState(State.LANDING);
                 break;
             default:
         }
@@ -82,8 +79,12 @@ public class Controller {
 
     private void updateStateFromMsg() throws InterruptedException{
         if(commChannel.isMsgAvailable()){
-            State s = commChannel.transformMsgToState(commChannel.receiveMsg());
-            model.chancheState(s);
+            String msg = commChannel.receiveMsg();
+            panel.writeInTextArea(msg);
+            State s = commChannel.transformMsgToState(msg);
+            if(s != null) {
+                model.chancheState(s);
+            }
         }
     }
 }

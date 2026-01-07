@@ -14,7 +14,7 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 
 	private SerialPort serialPort;
 	private BlockingQueue<String> queue;
-	private StringBuffer currentMsg = new StringBuffer("");
+	private StringBuffer currentMsg = new StringBuffer();
 	
 	public SerialCommChannel(String port, int rate) throws Exception {
 		queue = new ArrayBlockingQueue<String>(100);
@@ -28,8 +28,7 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 			                         SerialPort.STOPBITS_1,
 			                         SerialPort.PARITY_NONE);
 	
-			serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | 
-			                                  SerialPort.FLOWCONTROL_RTSCTS_OUT);
+			serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
 	
 			// serialPort.addEventListener(this, SerialPort.MASK_RXCHAR);
 			serialPort.addEventListener(this);
@@ -40,16 +39,11 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 
 	@Override
 	public void sendMsg(String msg) {
-		char[] array = (msg+"\n").toCharArray();
-		byte[] bytes = new byte[array.length];
-		for (int i = 0; i < array.length; i++){
-			bytes[i] = (byte) array[i];
-		}
 		try {
 			synchronized (serialPort) {
-				serialPort.writeBytes(bytes);
+				serialPort.writeString(msg + "\n");
 			}
-		} catch(Exception ex){
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -83,28 +77,19 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 	public void serialEvent(SerialPortEvent event) {
 		/* if there are bytes received in the input buffer */
 		if (event.isRXCHAR()) {
+			System.out.println("Message received");
             try {
             		String msg = serialPort.readString(event.getEventValue());
-            		
             		msg = msg.replaceAll("\r", "");
-            		
             		currentMsg.append(msg);
             		
-            		boolean goAhead = true;
-            		
-        			while(goAhead) {
-        				String msg2 = currentMsg.toString();
-        				int index = msg2.indexOf("\n");
-            			if (index >= 0) {
-            				queue.put(msg2.substring(0, index));
-            				currentMsg = new StringBuffer("");
-            				if (index + 1 < msg2.length()) {
-            					currentMsg.append(msg2.substring(index + 1)); 
-            				}
-            			} else {
-            				goAhead = false;
-            			}
-        			}
+        			while (true) {
+						int index = currentMsg.indexOf("\n");
+						if (index < 0) break;  // there's no newLine in the buffer
+						String completeMsg = currentMsg.substring(0, index);
+						queue.put(completeMsg);  // put the complete message in the queue
+						currentMsg.delete(0, index + 1); // remove the processed message from the buffer
+					}
         			
             } catch (Exception ex) {
             		ex.printStackTrace();
@@ -113,11 +98,22 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
         }
 	}
 
-	State transformMsgToState(String newState){
-		if(newState == "TAKE_OFF"){
-			return State.TAKE_OFF;
-		} else if(newState == "LANDING"){
-			return State.LANDING;
+	State transformMsgToState(String msg){
+		String[] tokens = msg.split(" ");
+
+		for (String t : tokens) {
+			if ("TAKE_OFF".equals(t)) {
+				return State.TAKE_OFF;
+			}
+			if ("LANDING".equals(t)) {
+				return State.LANDING;
+			}
+			if ("DRONE_INSIDE".equals(t)) {
+				return State.DRONE_INSIDE;
+			}
+			if ("DRONE_OUT".equals(t)) {
+				return State.DRONE_OUT;
+			}
 		}
 		return null;
 	}

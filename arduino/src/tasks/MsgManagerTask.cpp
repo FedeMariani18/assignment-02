@@ -12,41 +12,55 @@ void MsgManagerTask::tick(){
 
 void MsgManagerTask::receive(){
     if(MsgService.isMsgAvailable()) {
-        command = transformMsgToCommand(MsgService.receiveMsg());
+        Msg* msg = MsgService.receiveMsg();
+        if (msg != NULL) {
+            command = transformMsgToCommand(msg);
+        }
     }
 }
 
-void MsgManagerTask::send(){
-    String stringMsg = "";
+void MsgManagerTask::send() {
+    static String lastMsg = "";
+    String msg = "";
 
-    if(contextAlarm.getAlarmState() == AlarmState::ALARM){
-        stringMsg += "ALARM ";
-    } else {
-        stringMsg += "NORMAL ";
-    }
+    msg += (contextAlarm.getAlarmState() == AlarmState::ALARM)
+           ? "ALARM "
+           : "NORMAL ";
 
-    switch(context.getState()){
+    switch (context.getState()) {
         case State::DRONE_INSIDE:
-            stringMsg += "DRONE_INSIDE ";
+            msg += "DRONE_INSIDE";
             break;
         case State::TAKE_OFF:
-            stringMsg += "TAKE_OFF ";
+            msg += "TAKE_OFF";
             break;
         case State::DRONE_OUT:
-            stringMsg += "DRONE_OUT ";
+            msg += "DRONE_OUT";
             break;
         case State::LANDING:
-            stringMsg += "LANDING " + (String)distance;
+            msg += "LANDING" + String(distance, 2);
+            break;
+        case State::FORCED_CLOSING:
+            msg += "";
             break;
     }
 
-    MsgService.sendMsg(stringMsg);
+    //if (msg != lastMsg) {
+        MsgService.sendMsg(msg);
+        lastMsg = msg;
+    //}
 }
 
+
+
 Command MsgManagerTask::transformMsgToCommand(Msg* msg){
-    if(msg->getContent() == "TAKE_OFF"){
+    String content = msg->getContent();
+
+    if (content.equals("TAKE_OFF")) {
         return Command::TAKE_OFF;
-    } else if(msg->getContent() == "LANDING"){
+    } else if (content.equals("LANDING")) {
         return Command::LANDING;
     }
+
+    return Command::NONE; // no change
 }
