@@ -17,9 +17,9 @@ private:
     enum class DoorState {CLOSE, CLOSING, OPENING, OPEN};
 
     void setState(DoorState s);
-    void startTimeInState();
+    void startTime();
     long elapsedTimeInState();
-    void stopTimeInState();
+    void stopTime();
 
     ServoMotor* motor;
     Context& context;
@@ -27,6 +27,9 @@ private:
     int currentPos;
     
     DoorState state;
+
+    long timeStamp;
+    bool countingTime;
 };
 
 #endif
