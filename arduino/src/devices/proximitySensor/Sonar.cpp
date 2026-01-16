@@ -22,7 +22,7 @@ float Sonar::getDistance(){
     delayMicroseconds(5);
     digitalWrite(trigPin,LOW);
     
-    float tUS = pulseIn(echoPin, HIGH, timeOut);
+    float tUS = pulseIn(echoPin, HIGH);
     if (tUS == 0) {
         return NO_OBJ_DETECTED;
     } else {

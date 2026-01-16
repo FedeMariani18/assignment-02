@@ -16,7 +16,6 @@ void MsgManagerTask::tick(){
 
 void MsgManagerTask::receive(){
     if(MsgService.isMsgAvailable()) {
-        Serial.println("Messaggio ricevuto");
         Msg* msg = MsgService.receiveMsg();
         if (msg != NULL) {
             command = transformMsgToCommand(msg);
@@ -37,7 +36,7 @@ void MsgManagerTask::send() {
             msg += "DRONE_INSIDE";
             break;
         case State::TAKE_OFF:
-            msg += "TAKE_OFF";
+            msg += "TAKE_OFF" + String(distance, 2);
             break;
         case State::DRONE_OUT:
             msg += "DRONE_OUT";

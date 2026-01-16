@@ -39,8 +39,8 @@
 #define LCD_TASK_PERIOD 250
 #define MESSAGE_MANAGER_TASK_PERIOD 250
 
-#define D1 1
-#define D2 1
+#define D1 0.75
+#define D2 0.2
 
 enum class State {
     FORCED_CLOSING,

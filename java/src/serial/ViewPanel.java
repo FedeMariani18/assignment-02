@@ -53,6 +53,10 @@ public class ViewPanel extends JPanel{
         textArea.setEnabled(false);
         this.add(textArea, BorderLayout.CENTER); 
     }
+    
+    public void clearTextArea(){
+        textArea.setText("");
+    }
 
     public void writeInTextArea(String s){
         textArea.append(s);

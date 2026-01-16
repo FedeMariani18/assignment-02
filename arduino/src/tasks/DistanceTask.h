@@ -14,7 +14,7 @@ public:
 private:
     ProximitySensor* proximitySensor;
     Context& context;
-    double distance;
+    double& distance;
 };
 
 #endif

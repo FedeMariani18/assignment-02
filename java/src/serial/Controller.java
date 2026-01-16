@@ -80,10 +80,11 @@ public class Controller {
     private void updateStateFromMsg() throws InterruptedException{
         if(commChannel.isMsgAvailable()){
             String msg = commChannel.receiveMsg();
+            panel.clearTextArea();
             panel.writeInTextArea(msg);
             State s = commChannel.transformMsgToState(msg);
             if(s != null) {
-                model.chancheState(s);
+                model.changeState(s);
             }
         }
     }

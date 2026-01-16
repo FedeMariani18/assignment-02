@@ -6,21 +6,11 @@ FlowTask::FlowTask(ContextAlarm& contextAlarm, Context& context, bool& present, 
 
 }
 
-const char* commandToString(Command c) {
-  switch (c) {
-    case Command::TAKE_OFF:      return "TAKE_OFF";
-    case Command::LANDING:       return "LANDING";
-    default:                     return "UNKNOWN";
-  }
-}
-
 void FlowTask::tick() {
     switch (context.getState())
     {
         case State::DRONE_INSIDE:
             if (contextAlarm.getAlarmState() != AlarmState::ALARM && command == Command::TAKE_OFF) {
-                Serial.println("Cambio stato TAKE_OFF");
-                Serial.println(commandToString(command));
                 context.setState(State::TAKE_OFF);
             }
         break;

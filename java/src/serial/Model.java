@@ -9,7 +9,7 @@ public class Model {
         state = State.DRONE_INSIDE;
     }
 
-    public void chancheState(State s){
+    public void changeState(State s){
         this.state = s;
     }
 
