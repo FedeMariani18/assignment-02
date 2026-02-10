@@ -32,7 +32,7 @@ void setup() {
   hWPlatform = new HWPlatform();
   hWPlatform->init();
 
-  Task* msgManagerTask = new MsgManagerTask(context, contextAlarm, command, distanceValue);
+  Task* msgManagerTask = new MsgManagerTask(context, contextAlarm, command, distanceValue, tempValue);
   msgManagerTask->init(MESSAGE_MANAGER_TASK_PERIOD);
   
   Task* flowtask = new FlowTask(contextAlarm, context, dronePresence, distanceValue, command);

@@ -2,57 +2,70 @@
 #include "config.h"
 #include <Arduino.h>
 
-TemperatureAlarmTask::TemperatureAlarmTask(ContextAlarm& contextAlarm, Context& context, double temp, Button* resetBtn):
+TemperatureAlarmTask::TemperatureAlarmTask(ContextAlarm& contextAlarm, Context& context, double& temp, Button* resetBtn):
     contextAlarm(contextAlarm), context(context), temp(temp), resetBtn(resetBtn){
 
 }
 
-void TemperatureAlarmTask::tick(){
-    switch (contextAlarm.getAlarmState()){
-        
-        case AlarmState::NORMAL_OUT:
-            if(context.getState() != State::DRONE_OUT){
-                contextAlarm.setAlarmState(AlarmState::NORMAL);
-            }
-            break;
+void TemperatureAlarmTask::tick() {
 
-        case AlarmState::NORMAL:
-            if(context.getState() == State::DRONE_OUT){
-                contextAlarm.setAlarmState(AlarmState::NORMAL_OUT);
-            }
-            if(temp > TEMP1) {
-                if(countingTime && elapsedTimeInTemp() > T3){
-                    contextAlarm.setAlarmState(AlarmState::PRE_ALARM);
-                    stopTimeInTemp();
-                } else if(!countingTime) {
-                    startTimeInTemp();
-                }
-            }
-            break;
+    // Serial.print("Temp=");
+    // Serial.print(temp);
+    // Serial.print("  State=");
+    // Serial.print((int)contextAlarm.getAlarmState());
+    // Serial.print("  counting=");
+    // Serial.print(countingTime);
+    // Serial.print("  elapsed=");
+    // Serial.println(elapsedTimeInTemp());
+    switch (contextAlarm.getAlarmState()) {
 
-        case AlarmState::PRE_ALARM:
-            if(temp < TEMP1){
-                contextAlarm.setAlarmState(chooseNormalState());
-            }
-            if(temp > TEMP2) {
-                if(countingTime && elapsedTimeInTemp() > T4){
-                    contextAlarm.setAlarmState(AlarmState::ALARM);
-                    stopTimeInTemp();
-                } else if(!countingTime) {
-                    startTimeInTemp();
-                }
-            }
-            break;
+    case AlarmState::NORMAL_OUT:
+        if (context.getState() != State::DRONE_OUT)
+            contextAlarm.setAlarmState(AlarmState::NORMAL);
+        break;
 
-        case AlarmState::ALARM:
-            if(resetBtn->isPressed()){
-                contextAlarm.setAlarmState(chooseNormalState());
+    case AlarmState::NORMAL:
+
+        if (context.getState() == State::DRONE_OUT)
+            contextAlarm.setAlarmState(AlarmState::NORMAL_OUT);
+
+        if (temp >= TEMP1) {
+            if (!countingTime) startTimeInTemp();
+            else if (elapsedTimeInTemp() > T3) {
+                contextAlarm.setAlarmState(AlarmState::PRE_ALARM);
+                stopTimeInTemp();
             }
+        } else {
+            stopTimeInTemp();
+        }
+        break;
+
+    case AlarmState::PRE_ALARM:
+
+        if (temp < TEMP1) {
+            contextAlarm.setAlarmState(chooseNormalState());
+            stopTimeInTemp();
             break;
-        default:
-            break;
+        }
+
+        if (temp >= TEMP2) {
+            if (!countingTime) startTimeInTemp();
+            else if (elapsedTimeInTemp() > T4) {
+                contextAlarm.setAlarmState(AlarmState::ALARM);
+                stopTimeInTemp();
+            }
+        } else {
+            stopTimeInTemp();
+        }
+        break;
+
+    case AlarmState::ALARM:
+        resetBtn->update();
+        if (resetBtn->wasPressed()) {
+            contextAlarm.setAlarmState(chooseNormalState());
+        }
+        break;
     }
-    
 }
 
 AlarmState TemperatureAlarmTask::chooseNormalState(){

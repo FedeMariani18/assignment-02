@@ -10,7 +10,7 @@
 class MsgManagerTask: public Task{
 
 public:
-    MsgManagerTask(Context& context, ContextAlarm& contextAlarm, Command& command, double& distance);
+    MsgManagerTask(Context& context, ContextAlarm& contextAlarm, Command& command, double& distance, double& temp);
     void init(int period) override;
     void tick();
 
@@ -18,11 +18,13 @@ private:
     void receive();
     void send();
     Command transformMsgToCommand(Msg* msg);
+    String transformStateToSring(AlarmState state);
 
     Context& context;
     ContextAlarm& contextAlarm;
     Command& command;
-    double& distance; 
+    double& distance;
+    double& temp;
 };
 
 #endif

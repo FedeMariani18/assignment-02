@@ -14,7 +14,7 @@ public:
 private:
     PresenceSensor* presenceSensor;
     Context& context;
-    bool present;
+    bool& present;
 };
 
 #endif

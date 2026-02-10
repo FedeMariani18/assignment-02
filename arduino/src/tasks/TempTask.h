@@ -15,7 +15,7 @@ private:
     TempSensor* tempSensor;
     ContextAlarm& contextAlarm;
 
-    double temp;
+    double& temp;
 };
 
 #endif

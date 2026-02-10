@@ -1,7 +1,7 @@
 #include "MsgManagerTask.h"
 
-MsgManagerTask::MsgManagerTask(Context& context, ContextAlarm& contextAlarm, Command& command, double& distance):
-    context(context), contextAlarm(contextAlarm), command(command), distance(distance){
+MsgManagerTask::MsgManagerTask(Context& context, ContextAlarm& contextAlarm, Command& command, double& distance, double& temp):
+    context(context), contextAlarm(contextAlarm), command(command), distance(distance), temp(temp){
 };
 
 void MsgManagerTask::init(int period){
@@ -27,16 +27,14 @@ void MsgManagerTask::send() {
     static String lastMsg = "";
     String msg = "";
 
-    msg += (contextAlarm.getAlarmState() == AlarmState::ALARM)
-           ? "ALARM "
-           : "NORMAL ";
+    msg += transformStateToSring(contextAlarm.getAlarmState());
 
     switch (context.getState()) {
         case State::DRONE_INSIDE:
-            msg += "DRONE_INSIDE";
+            msg += "DRONE_INSIDE" + String(temp);
             break;
         case State::TAKE_OFF:
-            msg += "TAKE_OFF" + String(distance, 2);
+            msg += "TAKE_OFF" + String(distance, 2) + "       " + String(temp);
             break;
         case State::DRONE_OUT:
             msg += "DRONE_OUT";
@@ -49,13 +47,11 @@ void MsgManagerTask::send() {
             break;
     }
 
-    //if (msg != lastMsg) {
+    if (msg != lastMsg) {
         MsgService.sendMsg(msg);
         lastMsg = msg;
-    //}
+    }
 }
-
-
 
 Command MsgManagerTask::transformMsgToCommand(Msg* msg){
     String content = msg->getContent();
@@ -67,4 +63,25 @@ Command MsgManagerTask::transformMsgToCommand(Msg* msg){
     }
 
     return Command::NONE; // no change
+}
+
+String MsgManagerTask::transformStateToSring(AlarmState state){
+    switch (state)
+    {
+        case AlarmState::NORMAL:
+            return "NORMAL";
+            break;
+    
+        case AlarmState::NORMAL_OUT:
+            return "NORMAL";
+            break;
+
+        case AlarmState::PRE_ALARM:
+            return "PRE_ALARM";
+            break;
+
+        case AlarmState::ALARM:
+            return "ALARM";
+            break;
+    }
 }

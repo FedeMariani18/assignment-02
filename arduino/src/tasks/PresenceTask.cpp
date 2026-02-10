@@ -6,7 +6,7 @@ PresenceTask::PresenceTask(PresenceSensor* presenceSensor, Context& context, boo
 }
 
 void PresenceTask::tick(){
-    if(context.getState() == State::LANDING){
+    if(context.getState() == State::DRONE_OUT){
         present = presenceSensor->isDetected();
     }
 }

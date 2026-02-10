@@ -3,7 +3,7 @@
 
 Pir::Pir(int pin){
   this->pin = pin;
-  pinMode(pin, INPUT);     
+  pinMode(pin, INPUT);
 } 
   
 void Pir::sync(){
@@ -12,6 +12,7 @@ void Pir::sync(){
 }
 
 bool Pir::isDetected(){
+  sync();
   return detected;
 }
 

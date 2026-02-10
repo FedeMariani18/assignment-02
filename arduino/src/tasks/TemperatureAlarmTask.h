@@ -10,7 +10,7 @@
 class TemperatureAlarmTask: public Task{
 
 public:
-    TemperatureAlarmTask(ContextAlarm& contextAlarm, Context& context, double temp, Button* resetBtn);
+    TemperatureAlarmTask(ContextAlarm& contextAlarm, Context& context, double& temp, Button* resetBtn);
     void tick();
 
 private:
@@ -22,7 +22,7 @@ private:
     
     ContextAlarm& contextAlarm;
     Context& context;
-    double temp;
+    double& temp;
     Button* resetBtn;
     
     long tempTimeStamp;

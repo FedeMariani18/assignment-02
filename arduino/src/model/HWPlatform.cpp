@@ -5,7 +5,7 @@
 #include "devices/servoMotor/ServoMotorImpl.h"
 #include "devices/presenceSensor/Pir.h"
 #include "devices/proximitySensor/Sonar.h"
-#include "devices/tempSensor/TempSensorLM35.h"
+#include "devices/tempSensor/TempSensorTMP36.h"
 
 void wakeUp(){}
 
@@ -17,7 +17,7 @@ HWPlatform::HWPlatform(){
   motor = new ServoMotorImpl(MOTOR_PIN);
   presenceSensor = new Pir(PIR_PIN);
   proximitySensor = new Sonar(SONAR_ECHO_PIN, SONAR_TRIG_PIN, SONAR_TIMEOUT);
-  tempSensor = new TempSensorLM35(TEMP_PIN);
+  tempSensor = new TempSensorTMP36(TEMP_PIN);
   lcd = new LiquidCrystal_I2C(LCD_ADRR, LCD_COLS, LCD_ROWS);
   lcd->init();
   lcd->backlight();

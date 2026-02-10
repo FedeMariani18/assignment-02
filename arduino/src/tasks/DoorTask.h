@@ -11,6 +11,7 @@ class DoorTask: public Task{
 
 public:
     DoorTask(ServoMotor* motor, Context& context);
+    void init(int period);
     void tick();
 
 private:
@@ -18,18 +19,16 @@ private:
 
     void setState(DoorState s);
     void startTime();
-    long elapsedTimeInState();
+    unsigned long elapsedTimeInState();
     void stopTime();
+    float computePosition(bool opening);
 
     ServoMotor* motor;
     Context& context;
-    
-    int currentPos;
-    
     DoorState state;
-
-    long timeStamp;
     bool countingTime;
+    int currentPos;
+    long timeStamp;
 };
 
 #endif
