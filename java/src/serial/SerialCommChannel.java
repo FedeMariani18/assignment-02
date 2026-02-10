@@ -3,7 +3,7 @@ package serial;
 import java.util.concurrent.*;
 import jssc.*;
 
-import serial.Common.State;
+import serial.Common.*;
 /**
  * Comm channel implementation based on serial port.
  * 
@@ -97,22 +97,32 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
         }
 	}
 
-	State transformMsgToState(String msg){
-		String[] tokens = msg.split(" ");
-
-		for (String t : tokens) {
-			if ("TAKE_OFF".equals(t)) {
+	State transformMsgToState(String state){
+		switch (state) {
+			case "TAKE_OFF":
 				return State.TAKE_OFF;
-			}
-			if ("LANDING".equals(t)) {
+			case "LANDING":
 				return State.LANDING;
-			}
-			if ("DRONE_INSIDE".equals(t)) {
+			case "DRONE_INSIDE":
 				return State.DRONE_INSIDE;
-			}
-			if ("DRONE_OUT".equals(t)) {
+			case "DRONE_OUT":
 				return State.DRONE_OUT;
-			}
+			default:
+				break;
+		}
+		return null;
+	}
+
+	AlarmState transformMsgToAlarmState(String aState){
+		switch (aState) {
+			case "NORMAL":
+			case "NORMAL_OUT":
+				return AlarmState.NORMAL;
+			case "PRE_ALARM":
+			case "ALARM":
+				return AlarmState.ALARM;
+			default:
+				break;
 		}
 		return null;
 	}

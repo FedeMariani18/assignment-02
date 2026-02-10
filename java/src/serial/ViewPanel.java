@@ -5,8 +5,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import serial.Common.State;
-
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
@@ -35,7 +33,6 @@ public class ViewPanel extends JPanel{
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         btn = new Button("");
-        System.out.println("creato bottone");
         rightPanel.add(label);
         rightPanel.add(Box.createVerticalStrut(10)); // spazio
         rightPanel.add(btn);
@@ -53,7 +50,7 @@ public class ViewPanel extends JPanel{
         textArea.setEnabled(false);
         this.add(textArea, BorderLayout.CENTER); 
     }
-    
+
     public void clearTextArea(){
         textArea.setText("");
     }
@@ -70,16 +67,8 @@ public class ViewPanel extends JPanel{
         btn.setLabel(s);
     }
 
-    public void updateButtonEnabled(State s) {
-        switch (s) {
-            case State.LANDING:
-            case State.TAKE_OFF:
-                btn.setEnabled(false);
-                break;
-            case State.DRONE_INSIDE:
-            case State.DRONE_OUT:
-                btn.setEnabled(true);
-                break;
-        }
+    public void updateButtonEnabled(boolean enabled) {
+        btn.setEnabled(enabled);
     }
+
 }

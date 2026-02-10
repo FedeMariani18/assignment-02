@@ -1,5 +1,6 @@
 package serial;
 
+import serial.Common.AlarmState;
 import serial.Common.State;
 
 public class Controller {
@@ -30,6 +31,7 @@ public class Controller {
     }
 
     public void buttonPressed(){
+
         System.out.println("bottone premuto " + model.getState());
         switch (model.getState()) {
             case State.DRONE_INSIDE:
@@ -45,10 +47,19 @@ public class Controller {
 
     private void updateChanges() throws InterruptedException{
         updateStateFromMsg();
+        // AlarmState as = model.getAlarmState();
+        // panel.updateButtonEnabled(as);
+
         State s = model.getState();
         panel.updateState(fromStateToString(s));
         panel.updateAction(getAction(s));
-        panel.updateButtonEnabled(s);
+
+        boolean enabled = 
+        model.getAlarmState() == AlarmState.NORMAL &&
+        (s == State.DRONE_INSIDE || s == State.DRONE_OUT);
+
+
+        panel.updateButtonEnabled(enabled);
     }
 
     private String fromStateToString(State state){
@@ -82,9 +93,23 @@ public class Controller {
             String msg = commChannel.receiveMsg();
             panel.clearTextArea();
             panel.writeInTextArea(msg);
-            State s = commChannel.transformMsgToState(msg);
-            if(s != null) {
-                model.changeState(s);
+
+            String[] parts = msg.split(";");
+
+            if (parts.length >= 1) {
+                // ALARM STATE
+                AlarmState alarm = commChannel.transformMsgToAlarmState(parts[0]);
+                if (alarm != null) {
+                    model.changeAlarmState(alarm);
+                }
+            }
+
+            if (parts.length >= 2) {
+                // DRONE STATE
+                State drone = commChannel.transformMsgToState(parts[1]);
+                if (drone != null) {
+                    model.changeState(drone);
+                }
             }
         }
     }

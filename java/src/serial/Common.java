@@ -7,4 +7,9 @@ public class Common {
         DRONE_OUT,
         LANDING
     }
+
+    public enum AlarmState{
+        NORMAL,
+        ALARM
+    }
 }

@@ -27,20 +27,20 @@ void MsgManagerTask::send() {
     static String lastMsg = "";
     String msg = "";
 
-    msg += transformStateToSring(contextAlarm.getAlarmState());
+    msg += transformStateToSring(contextAlarm.getAlarmState()) + ";";
 
     switch (context.getState()) {
         case State::DRONE_INSIDE:
-            msg += "DRONE_INSIDE" + String(temp);
+            msg += "DRONE_INSIDE;" + String(temp);
             break;
         case State::TAKE_OFF:
-            msg += "TAKE_OFF" + String(distance, 2) + "       " + String(temp);
+            msg += "TAKE_OFF;" + String(distance, 2) + "       " + String(temp);
             break;
         case State::DRONE_OUT:
-            msg += "DRONE_OUT";
+            msg += "DRONE_OUT;";
             break;
         case State::LANDING:
-            msg += "LANDING" + String(distance, 2);
+            msg += "LANDING;" + String(distance, 2);
             break;
         case State::FORCED_CLOSING:
             msg += "";
@@ -69,19 +69,13 @@ String MsgManagerTask::transformStateToSring(AlarmState state){
     switch (state)
     {
         case AlarmState::NORMAL:
-            return "NORMAL";
-            break;
-    
         case AlarmState::NORMAL_OUT:
             return "NORMAL";
-            break;
 
         case AlarmState::PRE_ALARM:
             return "PRE_ALARM";
-            break;
 
         case AlarmState::ALARM:
             return "ALARM";
-            break;
     }
 }
