@@ -7,7 +7,7 @@ Pir::Pir(int pin){
 } 
   
 void Pir::sync(){
-  detected = digitalRead(pin) == HIGH;  
+  detected = digitalRead(pin) == HIGH;
   updateSyncTime(millis());
 }
 

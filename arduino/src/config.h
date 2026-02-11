@@ -35,8 +35,8 @@
 
 //TEMPERATURA
 
-#define TEMP1 23
-#define TEMP2 26
+#define TEMP1 28
+#define TEMP2 33    
 
 
 //PERIOD

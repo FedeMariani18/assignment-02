@@ -31,16 +31,16 @@ void MsgManagerTask::send() {
 
     switch (context.getState()) {
         case State::DRONE_INSIDE:
-            msg += "DRONE_INSIDE;" + String(temp);
+            msg += "DRONE_INSIDE;    temp: " + String(temp);
             break;
         case State::TAKE_OFF:
-            msg += "TAKE_OFF;" + String(distance, 2) + "       " + String(temp);
+            msg += "TAKE_OFF;    distance: " + String(distance, 2);
             break;
         case State::DRONE_OUT:
-            msg += "DRONE_OUT;";
+            msg += "DRONE_OUT;    temp: " + String(temp);
             break;
         case State::LANDING:
-            msg += "LANDING;" + String(distance, 2);
+            msg += "LANDING;    distance: " + String(distance, 2);
             break;
         case State::FORCED_CLOSING:
             msg += "";

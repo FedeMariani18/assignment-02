@@ -11,14 +11,18 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.TextArea;
 import java.awt.event.ActionListener;
+import java.awt.Font;
 
 public class ViewPanel extends JPanel{
+    private int baseFontSize = 18;
+    
     private Button btn;
     private TextArea textArea;
     private JLabel label;
 
     public ViewPanel(){
         setLayout(new BorderLayout());
+    
 
         paintTextArea();
         paintRightPanel();
@@ -37,7 +41,6 @@ public class ViewPanel extends JPanel{
         rightPanel.add(Box.createVerticalStrut(10)); // spazio
         rightPanel.add(btn);
 
-
         add(rightPanel, BorderLayout.EAST);
     }
 
@@ -49,6 +52,7 @@ public class ViewPanel extends JPanel{
         textArea = new TextArea();
         textArea.setEnabled(false);
         this.add(textArea, BorderLayout.CENTER); 
+        textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, baseFontSize));
     }
 
     public void clearTextArea(){
@@ -71,4 +75,18 @@ public class ViewPanel extends JPanel{
         btn.setEnabled(enabled);
     }
 
+
+    public void setFontSize(int size){
+        if(size <= 0) return;
+        baseFontSize = size;
+        Font labelFont = new Font(Font.SANS_SERIF, Font.PLAIN, baseFontSize);
+        Font btnFont = new Font(Font.SANS_SERIF, Font.PLAIN, baseFontSize);
+        Font taFont = new Font(Font.MONOSPACED, Font.PLAIN, baseFontSize);
+
+        if(label != null) label.setFont(labelFont);
+        if(btn != null) btn.setFont(btnFont);
+        if(textArea != null) textArea.setFont(taFont);
+        revalidate();
+        repaint();
+    }
 }
